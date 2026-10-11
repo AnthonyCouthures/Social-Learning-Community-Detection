@@ -35,7 +35,7 @@ saturating signal with gain $K = s'(0)$, for instance $s(x) = \min(1, \max(-1, K
 discrete-time social learning dynamics
 
 $$
-x(t+1) = x(t) + h\big(P\, s(x(t)) - x(t)\big), \qquad P = D^{-1}A,
+\Large x(t+1) = x(t) + h\big(P\, s(x(t)) - x(t)\big), \qquad P = D^{-1}A,
 $$
 
 that is, each agent moves towards the average action of its neighbors.
