@@ -8,4 +8,4 @@ First public version, accompanying the paper *Social learning community detectio
 - `rnp_communities`: Recursive Neighbor Pruning.
 - `rnp_dc_communities`: RNP with Decaying Confidence, with pluggable (multi-plateau) signals.
 - `opinion_dynamics`, `spectral_threshold`, `slcd.signals`.
-- Scripts reproducing every figure of the paper in `paper/`.
+- Scripts and a notebook (`paper/reproduce_figures.ipynb`) reproducing every figure of the paper, with the figures in `paper/figures/`.

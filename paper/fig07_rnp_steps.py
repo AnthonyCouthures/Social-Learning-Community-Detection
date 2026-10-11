@@ -55,7 +55,7 @@ def main() -> None:
     outside = [(u, v) for u, v in G.edges() if community_of[u] != community_of[v]]
     fig, ax = plt.subplots(figsize=FIGSIZE)
     nx.draw_networkx_edges(G, pos, ax=ax, edgelist=inside, width=0.5, alpha=0.2)
-    nx.draw_networkx_edges(G, pos, ax=ax, edgelist=outside, width=0.5, alpha=0.05)
+    nx.draw_networkx_edges(G, pos, ax=ax, edgelist=outside, width=0.5, alpha=0.01)
     nx.draw_networkx_nodes(
         G, pos, ax=ax, node_color=[f"C{community_of[v] % 10}" for v in nodes], **NODE_STYLE
     )

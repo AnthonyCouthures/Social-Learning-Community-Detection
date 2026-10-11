@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import os
 import shutil
+import sys
 from pathlib import Path
 
 import matplotlib as mpl
@@ -58,18 +59,25 @@ def set_style(legend_fontsize: float = 7) -> None:
 
 
 def save(fig: plt.Figure, name: str, **kwargs) -> Path:
-    """Save ``fig`` as ``paper/figures/<name>.pdf`` and close it.
+    """Save ``fig`` as ``paper/figures/<name>.pdf``.
 
+    In a Jupyter notebook the figure is also displayed; otherwise it is closed.
+    Figures of ``--quick`` runs go to ``paper/figures/quick/``.
     A PNG preview is also written when the environment variable ``SLCD_PNG=1``.
     """
-    FIGURES_DIR.mkdir(parents=True, exist_ok=True)
-    path = FIGURES_DIR / f"{name}.pdf"
+    # Smoke-test runs (--quick) must not overwrite the reference figures.
+    out_dir = FIGURES_DIR / "quick" if "--quick" in sys.argv else FIGURES_DIR
+    out_dir.mkdir(parents=True, exist_ok=True)
+    path = out_dir / f"{name}.pdf"
     kwargs.setdefault("transparent", True)
     fig.savefig(path, dpi=DPI, **kwargs)
     if os.environ.get("SLCD_PNG") == "1":
         fig.savefig(path.with_suffix(".png"), dpi=150, **{**kwargs, "transparent": False})
-    plt.close(fig)
     print(f"saved {path.relative_to(FIGURES_DIR.parents[1])}")
+    if "inline" in mpl.get_backend():
+        plt.show()
+    else:
+        plt.close(fig)
     return path
 
 

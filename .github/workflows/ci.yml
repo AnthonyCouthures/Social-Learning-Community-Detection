@@ -14,8 +14,8 @@ jobs:
         with:
           python-version: "3.11"
       - run: pip install -e .[dev]
-      - run: ruff check src paper
-      - run: ruff format --check src paper
+      - run: ruff check src paper notebooks
+      - run: ruff format --check src paper notebooks
       - run: mypy
 
   test:

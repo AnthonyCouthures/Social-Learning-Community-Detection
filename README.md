@@ -96,14 +96,17 @@ A short tour is available in [`notebooks/quickstart.ipynb`](notebooks/quickstart
 
 ## 4. Reproducing the paper
 
+All figures of the paper are in [`paper/figures/`](paper/figures/). To regenerate them, open the notebook
+[`paper/reproduce_figures.ipynb`](paper/reproduce_figures.ipynb), which shows every figure with a short explanation,
+or run the scripts from a terminal:
+
 ```bash
 pip install -e . -r paper/requirements.txt
 python paper/make_all.py            # all figures -> paper/figures/
 python paper/make_all.py --quick    # fast smoke test
 ```
 
-[`paper/README.md`](paper/README.md) maps each figure to its script and running time. It also lists the differences
-with the original notebooks.
+[`paper/README.md`](paper/README.md) maps each figure to its script, parameters and running time.
 
 ## 5. Repository structure
 
@@ -117,23 +120,31 @@ Social-Learning-Community-Detection/
 │   ├── _core.py              #   array-level numerics (graph-library independent)
 │   └── tests/
 ├── paper/                    # reproduction of the paper figures
+│   ├── reproduce_figures.ipynb
 │   ├── fig01_*.py ... fig09_*.py, make_all.py
 │   ├── common/               #   benchmarks (ABCD, LFR, SBM), baselines, metrics, plotting
 │   ├── data/                 #   football and chimpanzee networks, with sources and licenses
-│   └── results/              #   cached raw results of the long sweeps
+│   ├── figures/              #   the figures (PDF)
+│   └── results/              #   raw results of the parameter sweeps
 ├── notebooks/quickstart.ipynb
 ├── pyproject.toml, environment.yml, CITATION.cff, CHANGELOG.md, LICENSE
 └── .github/workflows/ci.yml
 ```
 
-## 6. Reproducibility and contributing
+## 6. Roadmap and contributing
 
-- Every random draw is controlled by `seed`. The paper scripts use fixed integer seeds, and
-  `paper/requirements.txt` pins the versions used to produce the figures.
-- `pytest` runs the unit tests and the docstring examples. `ruff check`, `ruff format --check` and `mypy` must pass.
-  CI runs all of them, plus a quick run of every figure script.
-- The numerical core (`slcd._core`) works on SciPy sparse arrays only. Front-ends for other graph libraries (igraph,
-  cdlib, a NetworkX backend or a NetworkX contribution) can reuse it as is. Issues and pull requests are welcome.
+The goal is to make these algorithms available where network scientists already work. The library is designed with
+that integration in mind:
+
+- **NetworkX.** The public functions follow the conventions of `networkx.algorithms.community`: graph first,
+  keyword-only parameters, `weight` and `seed` arguments, a list of node sets as output, and numpydoc docstrings with
+  doctests. They are meant to be proposed upstream, or exposed as a NetworkX backend.
+- **Other libraries.** All the numerics live in `slcd._core` and work on SciPy sparse arrays only. A front-end for
+  igraph or cdlib therefore only needs to convert its graph type.
+
+To contribute, install with `pip install -e .[dev]`. `pytest` runs the unit tests and docstring examples, and
+`ruff check`, `ruff format --check` and `mypy` must pass. CI runs all of them, plus a quick run of every figure
+script. Issues and pull requests are welcome.
 
 ## 7. How to cite
 
