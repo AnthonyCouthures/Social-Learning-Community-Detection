@@ -175,7 +175,14 @@ The nonlinear consensus model behind it was studied in
 }
 ```
 
-## 8. License
+## 8. Acknowledgements
+
+The algorithms and experiments were first developed by the authors in research notebooks. The code was then
+refactored into this package and the figure-reproduction scripts with the help of Claude (Anthropic), an AI coding
+assistant. The refactored algorithms were checked against the original implementation, which they reproduce exactly
+on identical random draws.
+
+## 9. License
 
 MIT. See [LICENSE](LICENSE). The bundled datasets keep their original terms; see
 [`paper/data/README.md`](paper/data/README.md).
