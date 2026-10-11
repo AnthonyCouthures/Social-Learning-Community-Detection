@@ -1,0 +1,33 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite the accompanying paper."
+title: "Social Learning Community Detection"
+type: software
+license: MIT
+version: 0.1.0
+repository-code: "https://github.com/AnthonyCouthures/Social-Learning-Community-Detection"
+authors:
+  - family-names: Couthures
+    given-names: Anthony
+    affiliation: "ICTEAM, UCLouvain"
+keywords:
+  - community detection
+  - opinion dynamics
+  - nonlinear consensus
+  - networks
+preferred-citation:
+  type: article
+  title: "Social learning community detection with nonlinear interaction"
+  authors:
+    - family-names: Couthures
+      given-names: Anthony
+    - family-names: Jayakumar
+      given-names: Athira Varma
+    - family-names: Varma
+      given-names: Vineeth Satheeskumar
+    - family-names: Morărescu
+      given-names: Irinel-Constantin
+    - family-names: Lasaulce
+      given-names: Samson
+    - family-names: Girard
+      given-names: Antoine
+  status: submitted

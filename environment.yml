@@ -1,0 +1,9 @@
+name: slcd
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11
+  - pip
+  - pip:
+      - -e .[dev]
+      - -r paper/requirements.txt
