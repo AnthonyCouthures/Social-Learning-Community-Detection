@@ -175,6 +175,9 @@ The nonlinear consensus model behind it was studied in
 }
 ```
 
+If you use the bundled datasets or the benchmark generators, please also cite their original sources, listed with
+BibTeX entries in [`paper/data/README.md`](paper/data/README.md#how-to-cite).
+
 ## 8. Acknowledgements
 
 The algorithms and experiments were first developed by the authors in research notebooks. The code was then

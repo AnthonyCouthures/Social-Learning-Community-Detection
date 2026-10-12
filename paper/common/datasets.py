@@ -30,7 +30,10 @@ CHIMP_FACTIONS = {-1: "No label", 0: "Central group", 1: "Western group"}
 
 
 def load_karate() -> nx.Graph:
-    """Zachary's karate club (unweighted, as bundled with NetworkX)."""
+    """Zachary's karate club (unweighted, as bundled with NetworkX).
+
+    Reference: W. W. Zachary, J. Anthropol. Res. 33(4), 452-473 (1977).
+    """
     G = nx.karate_club_graph()
     nx.set_edge_attributes(G, 1.0, "weight")
     return G
@@ -40,6 +43,8 @@ def load_football() -> tuple[nx.Graph, dict[str, int]]:
     """US college football 2000 (Girvan & Newman), nodes are team names.
 
     Returns the graph and the conference id of each team.
+
+    Reference: M. Girvan and M. E. J. Newman, PNAS 99(12), 7821-7826 (2002).
     """
     raw = nx.read_gml(DATA_DIR / "football" / "football.gml", label="id")
     names = {i: attrs["label"] for i, attrs in raw.nodes(data=True)}
@@ -59,6 +64,9 @@ def load_chimpanzees(year: int = 2015) -> tuple[nx.Graph, dict[str, int]]:
     adjacency matrix. Self-loops and inactive individuals are removed.
     Returns the graph and the 2018 faction label of each individual
     (see :data:`CHIMP_FACTIONS`).
+
+    Reference: A. A. Sandel et al., Science 392(6794), 216-220 (2026); data on
+    Dryad, doi:10.5061/dryad.sf7m0cgkg (CC0).
     """
     adjacency = np.loadtxt(DATA_DIR / "chimpanzees" / f"A_{year}.csv", delimiter=",")
     members = pd.read_csv(DATA_DIR / "chimpanzees" / "combined_membership_labels.csv")
