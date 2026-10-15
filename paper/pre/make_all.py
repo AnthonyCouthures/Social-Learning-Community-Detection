@@ -1,7 +1,7 @@
 """Reproduce every figure of the paper.
 
-python paper/make_all.py            # full runs (Figs. 3, 4 and 9 take a while)
-python paper/make_all.py --quick    # fast smoke test of the whole pipeline
+python paper/pre/make_all.py            # full runs (Figs. 3, 4 and 9 take a while)
+python paper/pre/make_all.py --quick    # fast smoke test of the whole pipeline
 """
 
 import argparse

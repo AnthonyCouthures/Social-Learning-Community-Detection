@@ -1,7 +1,8 @@
 # Reproducing the paper
 
 This folder reproduces every figure of *Social learning community detection with nonlinear interaction*. It is not
-part of the installed library: it adds benchmark generators, baselines, metrics and plotting on top of `slcd`.
+part of the installed library: it uses the benchmark generators, baselines, metrics and plotting of
+[`../common/`](../common/) on top of `slcd`.
 
 ## Setup
 
@@ -18,11 +19,11 @@ pip install -r paper/requirements.txt
 
 The easiest way to browse the figures is the notebook [`reproduce_figures.ipynb`](reproduce_figures.ipynb). It runs
 each script in turn and shows the result inline. The PDFs of all figures are also stored in
-[`paper/figures/`](figures/).
+[`paper/pre/figures/`](figures/).
 
-From a terminal, run everything with `python paper/make_all.py`, or a subset with `python paper/make_all.py --only 2 5`.
+From a terminal, run everything with `python paper/pre/make_all.py`, or a subset with `python paper/pre/make_all.py --only 2 5`.
 Every script accepts `--quick` (a small, fast run). The three parameter sweeps also accept `--n-jobs` (number of
-worker processes) and `--plot-only`, which re-plots from the results stored in `paper/results/`.
+worker processes) and `--plot-only`, which re-plots from the results stored in `paper/pre/results/`.
 
 | Paper | Script | Content | Time* |
 |---|---|---|---|

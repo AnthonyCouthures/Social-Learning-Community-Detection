@@ -14,7 +14,8 @@ from matplotlib.scale import ScaleBase, register_scale
 from matplotlib.ticker import FuncFormatter
 from matplotlib.transforms import Transform
 
-FIGURES_DIR = Path(__file__).resolve().parents[1] / "figures"
+REPO_ROOT = Path(__file__).resolve().parents[2]
+FIGURES_DIR = REPO_ROOT / "paper" / "pre" / "figures"
 DPI = 300
 
 
@@ -58,22 +59,22 @@ def set_style(legend_fontsize: float = 7) -> None:
     )
 
 
-def save(fig: plt.Figure, name: str, **kwargs) -> Path:
-    """Save ``fig`` as ``paper/figures/<name>.pdf``.
+def save(fig: plt.Figure, name: str, directory: Path = FIGURES_DIR, **kwargs) -> Path:
+    """Save ``fig`` as ``<directory>/<name>.pdf`` (``paper/pre/figures/`` by default).
 
     In a Jupyter notebook the figure is also displayed; otherwise it is closed.
-    Figures of ``--quick`` runs go to ``paper/figures/quick/``.
+    Figures of ``--quick`` runs go to ``<directory>/quick/``.
     A PNG preview is also written when the environment variable ``SLCD_PNG=1``.
     """
     # Smoke-test runs (--quick) must not overwrite the reference figures.
-    out_dir = FIGURES_DIR / "quick" if "--quick" in sys.argv else FIGURES_DIR
+    out_dir = directory / "quick" if "--quick" in sys.argv else directory
     out_dir.mkdir(parents=True, exist_ok=True)
     path = out_dir / f"{name}.pdf"
     kwargs.setdefault("transparent", True)
     fig.savefig(path, dpi=DPI, **kwargs)
     if os.environ.get("SLCD_PNG") == "1":
         fig.savefig(path.with_suffix(".png"), dpi=150, **{**kwargs, "transparent": False})
-    print(f"saved {path.relative_to(FIGURES_DIR.parents[1])}")
+    print(f"saved {path.relative_to(REPO_ROOT) if path.is_relative_to(REPO_ROOT) else path}")
     if "inline" in mpl.get_backend():
         plt.show()
     else:

@@ -1,5 +1,10 @@
 """Fig. 1 -- Examples of nonlinear interaction (signal) functions."""
 
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))  # the paper/ folder, for ``common``
+
 import matplotlib.pyplot as plt
 import numpy as np
 

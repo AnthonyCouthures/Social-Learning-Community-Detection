@@ -44,4 +44,4 @@ jobs:
         with:
           python-version: "3.11"
       - run: pip install -e . -r paper/requirements.txt
-      - run: python paper/make_all.py --quick
+      - run: python paper/pre/make_all.py --quick

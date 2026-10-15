@@ -8,7 +8,11 @@ spectral gap 1 / (1 - lambda_{N-1}(P)) of the normalized Laplacian. Use
 ``--definition paper`` for K* = 1 / lambda_{N-1}(P) as defined in Sec. IV.A.
 """
 
+import sys
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))  # the paper/ folder, for ``common``
+
 
 import matplotlib.pyplot as plt
 import matplotlib.ticker as mticker
