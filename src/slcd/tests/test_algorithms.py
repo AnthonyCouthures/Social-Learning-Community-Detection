@@ -4,11 +4,13 @@ import pytest
 
 import slcd
 from slcd import rnp_communities, rnp_dc_communities, ser_communities, ser_edge_reliability
+from slcd._core import rnp_sequential_active
 from slcd.signals import staircase
 
 ALGORITHMS = [
     pytest.param(lambda G, **kw: ser_communities(G, n_runs=50, **kw), id="ser"),
     pytest.param(rnp_communities, id="rnp"),
+    pytest.param(lambda G, **kw: rnp_communities(G, mode="sequential", **kw), id="rnp_seq"),
     pytest.param(rnp_dc_communities, id="rnp_dc"),
 ]
 
@@ -63,7 +65,7 @@ def test_string_labels(algo):
     }
 
 
-@pytest.mark.parametrize("algo", [p for p in ALGORITHMS if p.id != "rnp"])
+@pytest.mark.parametrize("algo", [p for p in ALGORITHMS if p.id not in ("rnp", "rnp_seq")])
 def test_below_spectral_threshold_gives_consensus(algo):
     # RNP is excluded: below the threshold all states decay to 0 and the sign
     # test of RNP is meaningless (documented in its Notes).
@@ -128,6 +130,8 @@ def test_invalid_parameters():
         ser_communities(G, mode="bogus")
     with pytest.raises(ValueError):
         rnp_communities(G, K=-1)
+    with pytest.raises(ValueError, match="mode"):
+        rnp_communities(G, mode="bogus")
     with pytest.raises(ValueError):
         rnp_dc_communities(G, rho=1.5)
 
@@ -136,3 +140,43 @@ def test_rnp_dc_with_staircase_signal():
     G, truth = planted_sbm()
     communities = rnp_dc_communities(G, K=2.5, R=4.0, rho=0.98, h=0.1, signal=staircase(3), seed=0)
     assert as_partition(communities) == truth
+
+
+@pytest.mark.parametrize(
+    "graph",
+    [nx.barbell_graph(6, 0), planted_sbm()[0], planted_sbm(seed=4)[0]],
+    ids=["barbell", "sbm1", "sbm4"],
+)
+@pytest.mark.parametrize("seed", [0, 1, 2])
+def test_rnp_modes_agree(graph, seed):
+    batch = rnp_communities(graph, mode="batch", seed=seed)
+    sequential = rnp_communities(graph, mode="sequential", seed=seed)
+    assert as_partition(batch) == as_partition(sequential)
+
+
+def test_rnp_sequential_counts_without_cut():
+    # A complete graph never splits: exactly n_retry rounds of round(T / h)
+    # steps, one message per step and per directed edge.
+    G = nx.complete_graph(6)
+    A = nx.to_scipy_sparse_array(G, format="csr", dtype=float)
+    rng = np.random.default_rng(0)
+    active, n_rounds, n_messages = rnp_sequential_active(
+        A, K=4.0, h=0.5, T=20.0, n_retry=7, signal=None, rng=rng
+    )
+    assert active.all()
+    assert n_rounds == 7
+    assert n_messages == 7 * 40 * A.nnz
+
+
+def test_rnp_sequential_counts_with_cut():
+    # Only the bridge is cut, in a single round. Rounds up to that one run on
+    # the whole graph; the last n_retry rounds run without the bridge.
+    G = nx.barbell_graph(6, 0)
+    A = nx.to_scipy_sparse_array(G, format="csr", dtype=float)
+    n_retry, steps = 5, 100
+    active, n_rounds, n_messages = rnp_sequential_active(
+        A, K=4.0, h=0.5, T=50.0, n_retry=n_retry, signal=None, rng=np.random.default_rng(0)
+    )
+    assert active.sum() == A.nnz - 2
+    assert n_rounds > n_retry
+    assert n_messages == steps * ((n_rounds - n_retry) * A.nnz + n_retry * (A.nnz - 2))

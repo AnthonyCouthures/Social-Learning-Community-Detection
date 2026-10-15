@@ -233,6 +233,51 @@ def rnp_active(
     return active
 
 
+def rnp_sequential_active(
+    A: sp.csr_array,
+    *,
+    K: float,
+    h: float,
+    T: float,
+    n_retry: int,
+    signal: Signal | None,
+    rng: Rng,
+) -> tuple[np.ndarray, int, int]:
+    """Boolean mask of the entries of ``A`` that survive sequential RNP.
+
+    This is Algorithm 1 verbatim: each round runs a single realization for
+    exactly ``round(T / h)`` steps (no early stop) on the current graph and
+    removes every edge whose endpoints end with public actions of opposite
+    signs. The counter of consecutive rounds without any cut is reset after
+    every cut, and RNP stops once it reaches ``n_retry``.
+
+    Returns the mask, the number of rounds and the number of scalar messages,
+    i.e. one message per step and per active entry ``(i, j)``, ``i != j``.
+    """
+    n = A.shape[0]
+    rows, cols = entry_rows(A), A.indices
+    active = np.ones(A.nnz, dtype=bool)
+    off_diagonal = rows != cols
+    n_steps = int(round(T / h))
+    P = A.copy()
+    n_failed = n_rounds = n_messages = 0
+    while n_failed < n_retry and active.any():
+        P.data = row_normalized_data(A, rows, active)
+        # tol=-1: the drift is never below it, so all n_steps steps are run.
+        x, _ = simulate(P, rng.uniform(-1.0, 1.0, size=n), K=K, h=h, T=T, signal=signal, tol=-1.0)
+        n_rounds += 1
+        n_messages += n_steps * int(np.count_nonzero(active & off_diagonal))
+        s = apply_signal(x, K, signal)
+        idx = np.flatnonzero(active)
+        cut = s[rows[idx]] * s[cols[idx]] < 0
+        if cut.any():
+            active[idx[cut]] = False
+            n_failed = 0
+        else:
+            n_failed += 1
+    return active, n_rounds, n_messages
+
+
 # ---------------------------------------------------------------------------
 # RNP with Decaying Confidence (RNP-DC) -- Algorithm 2
 # ---------------------------------------------------------------------------

@@ -15,6 +15,7 @@ from slcd._core import (
     entry_rows,
     rnp_active,
     rnp_dc_active,
+    rnp_sequential_active,
 )
 from slcd._graph import labels_to_communities, to_adjacency
 
@@ -35,6 +36,7 @@ def rnp_communities(
     *,
     K: float = 4.0,
     n_retry: int = 50,
+    mode: str = "batch",
     h: float = 0.5,
     T: float = 300.0,
     signal: Signal | None = None,
@@ -50,6 +52,17 @@ def rnp_communities(
     graph until ``n_retry`` independent realizations no longer cut any edge.
     The communities are the connected components of the final graph.
 
+    Two schedules of the realizations are available:
+
+    * ``mode="batch"``: each round simulates ``n_retry`` realizations at
+      once and cuts the edges with opposite actions in at least one of them;
+      RNP stops after the first round that cuts nothing.
+    * ``mode="sequential"``: each round simulates a single realization for
+      exactly ``round(T / h)`` steps; RNP stops after ``n_retry``
+      consecutive rounds without any cut, the counter being reset after each
+      cut. This is the schedule run by the agents of a decentralized
+      implementation, one realization at a time.
+
     Parameters
     ----------
     G : NetworkX graph
@@ -57,12 +70,16 @@ def rnp_communities(
     K : float, default 4.0
         Interaction gain :math:`K = s'(0)`.
     n_retry : int, default 50
-        Number of independent realizations tried at each pruning round
-        (:math:`N_{\mathrm{retry}}`); they are simulated simultaneously.
+        :math:`N_{\mathrm{retry}}`: number of realizations simulated
+        simultaneously at each round (``mode="batch"``), or number of
+        consecutive unsuccessful rounds before stopping (``mode="sequential"``).
+    mode : {"batch", "sequential"}, default "batch"
+        Schedule of the realizations, see above.
     h : float, default 0.5
         Euler step size.
     T : float, default 300.0
-        Time horizon of each realization.
+        Time horizon of each realization. With ``mode="sequential"``, the
+        number of steps per round is :math:`T_{\max} = \mathrm{round}(T / h)`.
     signal : callable or None, default None
         Unit signal function, see :mod:`slcd.signals`; ``None`` is the
         saturation.
@@ -108,10 +125,18 @@ def rnp_communities(
     >>> G = nx.barbell_graph(5, 0)
     >>> sorted(map(sorted, rnp_communities(G, seed=0)))
     [[0, 1, 2, 3, 4], [5, 6, 7, 8, 9]]
+    >>> sorted(map(sorted, rnp_communities(G, mode="sequential", seed=0)))
+    [[0, 1, 2, 3, 4], [5, 6, 7, 8, 9]]
     """
     _check(K, n_retry)
+    if mode not in ("batch", "sequential"):
+        raise ValueError(f"mode must be 'batch' or 'sequential', got {mode!r}")
     nodes, A = to_adjacency(G, weight)
-    active = rnp_active(A, K=K, h=h, T=T, n_retry=n_retry, signal=signal, rng=check_random_state(seed))
+    rng = check_random_state(seed)
+    if mode == "batch":
+        active = rnp_active(A, K=K, h=h, T=T, n_retry=n_retry, signal=signal, rng=rng)
+    else:
+        active, _, _ = rnp_sequential_active(A, K=K, h=h, T=T, n_retry=n_retry, signal=signal, rng=rng)
     return labels_to_communities(nodes, component_labels(len(nodes), entry_rows(A), A.indices, active))
 
 

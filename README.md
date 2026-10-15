@@ -71,7 +71,7 @@ list of node sets, as `nx.community.louvain_communities` does. Edge weights are 
 |---|---|
 | `ser_communities(G, *, K=4, tau=1, epsilon=0.5, n_runs=200, mode="action", h=0.5, T=300, ...)` | partition (SER) |
 | `ser_edge_reliability(G, *, K=4, epsilon=0.5, n_runs=200, mode="action", ...)` | `{(u, v): P_uv}`; with `mode="opinion"`, directed scores |
-| `rnp_communities(G, *, K=4, n_retry=50, h=0.5, T=300, ...)` | partition (RNP) |
+| `rnp_communities(G, *, K=4, n_retry=50, mode="batch", h=0.5, T=300, ...)` | partition (RNP); `mode="sequential"` runs one realization per round |
 | `rnp_dc_communities(G, *, K=4, R=20, rho=0.99, n_retry=50, ...)` | partition (RNP-DC) |
 | `opinion_dynamics(G, *, K=4, x0=None, n_runs=1, record=False, confidence=None, ...)` | final opinions or trajectories |
 | `spectral_threshold(G)` | critical gain $K^* = 1/\lambda_{N-1}(P)$ |
