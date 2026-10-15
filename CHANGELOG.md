@@ -8,4 +8,5 @@ First public version, accompanying the paper *Social learning community detectio
 - `rnp_communities`: Recursive Neighbor Pruning. `mode="sequential"` runs one realization per round and stops after `n_retry` consecutive rounds without a cut, as the agents of a decentralized implementation would; the default `mode="batch"` is unchanged.
 - `rnp_dc_communities`: RNP with Decaying Confidence, with pluggable (multi-plateau) signals.
 - `opinion_dynamics`, `spectral_threshold`, `slcd.signals`.
-- Scripts and a notebook (`paper/reproduce_figures.ipynb`) reproducing every figure of the paper, with the figures in `paper/figures/`.
+- Scripts and a notebook (`paper/pre/reproduce_figures.ipynb`) reproducing every figure of the paper, with the figures in `paper/pre/figures/`.
+- `paper/ecc2027/`: numerical results of the ECC 2027 paper on RNP (ABCD and LFR benchmarks against label propagation, a distributed spectral bisection and Louvain, with message counts).

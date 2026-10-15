@@ -17,3 +17,7 @@ paper/pre/figures/*.png
 paper/pre/figures/quick/
 paper/pre/results/*.log
 paper/pre/results/*_quick.csv
+paper/ecc2027/figures/*.png
+paper/ecc2027/figures/quick/
+paper/ecc2027/results/*_quick*
+paper/ecc2027/results/*.log

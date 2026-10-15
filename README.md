@@ -12,7 +12,8 @@ needs a global view of the graph or has to reveal its private opinion.
 This repository has two parts:
 
 1. **`slcd`**, a small Python library with a NetworkX-style API. Its only dependencies are NumPy, SciPy and NetworkX.
-2. **`paper/`**, scripts that reproduce every figure of the companion paper:
+2. **`paper/`**, scripts that reproduce the figures of the papers. `paper/pre/` covers every figure of the companion
+   paper below; `paper/ecc2027/` covers the numerical section of a conference paper on RNP.
 
 > A. Couthures, A. V. Jayakumar, V. S. Varma, I.-C. Morărescu, S. Lasaulce and A. Girard,
 > *Social learning community detection with nonlinear interaction*.
@@ -96,17 +97,18 @@ A short tour is available in [`notebooks/quickstart.ipynb`](notebooks/quickstart
 
 ## 4. Reproducing the paper
 
-All figures of the paper are in [`paper/figures/`](paper/figures/). To regenerate them, open the notebook
-[`paper/reproduce_figures.ipynb`](paper/reproduce_figures.ipynb), which shows every figure with a short explanation,
-or run the scripts from a terminal:
+All figures of the paper are in [`paper/pre/figures/`](paper/pre/figures/). To regenerate them, open the notebook
+[`paper/pre/reproduce_figures.ipynb`](paper/pre/reproduce_figures.ipynb), which shows every figure with a short
+explanation, or run the scripts from a terminal:
 
 ```bash
 pip install -e . -r paper/requirements.txt
-python paper/make_all.py            # all figures -> paper/figures/
-python paper/make_all.py --quick    # fast smoke test
+python paper/pre/make_all.py            # all figures -> paper/pre/figures/
+python paper/pre/make_all.py --quick    # fast smoke test
 ```
 
-[`paper/README.md`](paper/README.md) maps each figure to its script, parameters and running time.
+[`paper/pre/README.md`](paper/pre/README.md) maps each figure to its script, parameters and running time.
+[`paper/ecc2027/README.md`](paper/ecc2027/README.md) does the same for the conference paper on RNP.
 
 ## 5. Repository structure
 
@@ -120,12 +122,14 @@ Social-Learning-Community-Detection/
 │   ├── _core.py              #   array-level numerics (graph-library independent)
 │   └── tests/
 ├── paper/                    # reproduction of the paper figures
-│   ├── reproduce_figures.ipynb
-│   ├── fig01_*.py ... fig09_*.py, make_all.py
 │   ├── common/               #   benchmarks (ABCD, LFR, SBM), baselines, metrics, plotting
 │   ├── data/                 #   football and chimpanzee networks, with sources and licenses
-│   ├── figures/              #   the figures (PDF)
-│   └── results/              #   raw results of the parameter sweeps
+│   ├── pre/                  #   companion paper
+│   │   ├── reproduce_figures.ipynb
+│   │   ├── fig01_*.py ... fig09_*.py, make_all.py
+│   │   ├── figures/          #     the figures (PDF)
+│   │   └── results/          #     raw results of the parameter sweeps
+│   └── ecc2027/              #   conference paper on RNP (same layout)
 ├── notebooks/quickstart.ipynb
 ├── pyproject.toml, environment.yml, CITATION.cff, CHANGELOG.md, LICENSE
 └── .github/workflows/ci.yml

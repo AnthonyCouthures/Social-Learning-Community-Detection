@@ -18,9 +18,14 @@ def abcd_graph(
     beta: float = 1.5,
     min_degree: int = 10,
     min_community_size: int = 20,
+    max_degree: int | None = None,
+    max_community_size: int | None = None,
     seed: int,
 ) -> tuple[nx.Graph, list[set[int]]]:
     """ABCD benchmark graph (Python ``abcd_graph`` package) and its communities.
+
+    ``max_degree`` and ``max_community_size`` default to the bounds chosen by
+    ``abcd_graph``.
 
     ``abcd_graph`` draws from the global ``random`` and ``numpy.random``
     generators, which are seeded here. Self-loops are removed.
@@ -30,7 +35,14 @@ def abcd_graph(
     random.seed(seed)
     np.random.seed(seed)  # noqa: NPY002 -- abcd_graph uses the legacy global generator
     params = ABCDParams(
-        vcount=n, gamma=gamma, beta=beta, xi=xi, min_degree=min_degree, min_community_size=min_community_size
+        vcount=n,
+        gamma=gamma,
+        beta=beta,
+        xi=xi,
+        min_degree=min_degree,
+        max_degree=max_degree,
+        min_community_size=min_community_size,
+        max_community_size=max_community_size,
     )
     abcd = ABCDGraph(params).build()
     G = abcd.exporter.to_networkx() if hasattr(abcd, "exporter") else abcd.to_networkx()
