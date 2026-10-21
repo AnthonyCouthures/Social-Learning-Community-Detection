@@ -10,6 +10,7 @@ rounds without a cut, i.e. `slcd.rnp_communities(G, mode="sequential", T=T_max *
 |---|---|---|
 | `abcd_benchmark.py` | RNP (K = 2, 4, 8; N_retry = 5, 10, 20, 50), RNP-light, distributed spectral bisection, asynchronous label propagation, Louvain and Leiden on ABCD graphs (25 ξ × 20 graphs × 5 runs); K\*(G) and min_c K\*(G_c) | ~ 22 min |
 | `lfr_benchmark.py` | RNP, distributed spectral bisection, asynchronous label propagation and Louvain on LFR graphs (`networkx`, same degree and community size ranges; 15 μ × 20 graphs × 5 runs), against the measured mean external ratio; K\*(G), min_c K\*(G_c), disconnected communities. Run after `abcd_benchmark.py` (gray ABCD curve) | ~ 8 min |
+| `rnp_steps.py` | Illustration of the rounds of RNP on a 4-block SBM, one PDF per stage: initial opinions, steady state and pruned edges of the first two rounds, final partition | < 1 min |
 
 \* On a 14-core laptop.
 
