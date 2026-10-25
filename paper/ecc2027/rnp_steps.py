@@ -75,8 +75,12 @@ def layout(G: nx.Graph, community_of: dict, seed: int) -> dict:
         (u, v, 1.0 if community_of[u] == community_of[v] else 0.1) for u, v in G.edges()
     )
     pos = nx.spring_layout(weighted, weight="weight", k=1.5 / np.sqrt(len(G)), iterations=200, seed=seed)
-    centers = {c: np.mean([pos[v] for v in G if community_of[v] == c], axis=0) for c in set(community_of.values())}
-    return {v: centers[community_of[v]] + COMMUNITY_SCALE * (p - centers[community_of[v]]) for v, p in pos.items()}
+    centers = {
+        c: np.mean([pos[v] for v in G if community_of[v] == c], axis=0) for c in set(community_of.values())
+    }
+    return {
+        v: centers[community_of[v]] + COMMUNITY_SCALE * (p - centers[community_of[v]]) for v, p in pos.items()
+    }
 
 
 def main() -> None:
@@ -90,8 +94,10 @@ def main() -> None:
     rounds, final = rnp_rounds(G, rng)
     communities = sorted(nx.connected_components(final), key=len, reverse=True)
     community_of = {v: i for i, c in enumerate(communities) for v in c}
-    print(f"RNP: {len(rounds)} rounds with cuts, {len(communities)} communities of sizes "
-          f"{[len(c) for c in communities]}")
+    print(
+        f"RNP: {len(rounds)} rounds with cuts, {len(communities)} communities of sizes "
+        f"{[len(c) for c in communities]}"
+    )
     pos = layout(G, community_of, args.seed)
 
     opinion_kwargs = {"cmap": OPINIONS, "vmin": -1, "vmax": 1, **NODE_STYLE}
@@ -126,6 +132,7 @@ def main() -> None:
     for (graph, x, cut), name in zip(rounds[:2], ("b_round1", "c_round2"), strict=False):
         stage(f"ecc2027_rnp_{name}", pruning(graph, x, cut))
     stage("ecc2027_rnp_d_final", partition)
+
 
 if __name__ == "__main__":
     main()
