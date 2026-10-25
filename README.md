@@ -3,6 +3,7 @@
 [![CI](https://github.com/AnthonyCouthures/Social-Learning-Community-Detection/actions/workflows/ci.yml/badge.svg)](https://github.com/AnthonyCouthures/Social-Learning-Community-Detection/actions/workflows/ci.yml)
 ![Python](https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12%20%7C%203.13-blue)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23317344.svg)](https://doi.org/10.5281/zenodo.23317344)
 
 **Decentralized community detection with nonlinear opinion dynamics.** Every node is an agent with a private opinion.
 It only observes the saturated *public actions* of its neighbors. Above a spectral threshold, the network breaks
@@ -152,7 +153,7 @@ script. Issues and pull requests are welcome.
 
 ## 7. How to cite
 
-If you use this code, please cite the paper (see also [`CITATION.cff`](CITATION.cff)):
+If you use this code, please cite the paper and the archived software (see also [`CITATION.cff`](CITATION.cff)):
 
 ```bibtex
 @article{couthures2026social,
@@ -161,6 +162,18 @@ If you use this code, please cite the paper (see also [`CITATION.cff`](CITATION.
             Mor{\u{a}}rescu, Irinel-Constantin and Lasaulce, Samson and Girard, Antoine},
   note   = {Submitted},
   year   = {2026}
+}
+```
+
+```bibtex
+@software{couthures2026slcd,
+  title     = {Social Learning Community Detection},
+  author    = {Couthures, Anthony},
+  year      = {2026},
+  version   = {0.1.0},
+  publisher = {Zenodo},
+  doi       = {10.5281/zenodo.23317344},
+  url       = {https://doi.org/10.5281/zenodo.23317344}
 }
 ```
 

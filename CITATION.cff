@@ -1,9 +1,14 @@
 cff-version: 1.2.0
-message: "If you use this software, please cite the accompanying paper."
+message: "If you use this software, please cite the accompanying paper and the archived software (DOI below)."
 title: "Social Learning Community Detection"
 type: software
 license: MIT
 version: 0.1.0
+doi: 10.5281/zenodo.23317344
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.23317344
+    description: "Zenodo archive of the software"
 repository-code: "https://github.com/AnthonyCouthures/Social-Learning-Community-Detection"
 authors:
   - family-names: Couthures

@@ -34,6 +34,7 @@ dev = ["social-learning-community-detection[test]", "ruff>=0.5", "mypy>=1.8"]
 [project.urls]
 Homepage = "https://github.com/AnthonyCouthures/Social-Learning-Community-Detection"
 Issues = "https://github.com/AnthonyCouthures/Social-Learning-Community-Detection/issues"
+DOI = "https://doi.org/10.5281/zenodo.23317344"
 
 [tool.hatch.version]
 path = "src/slcd/__init__.py"
